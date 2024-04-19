@@ -18,7 +18,16 @@ jobs:
         with:
           node-version: '21'
 
-      - name: install dependencies
+      - name: Cache Node modules
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}-${{ github.run_id }}
+          restore-keys: |
+              ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+              ${{ runner.os }}-node-
+
+      - name: Install dependencies
         run: npm install
 
       - name: Run tests
