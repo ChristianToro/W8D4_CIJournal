@@ -3,24 +3,24 @@ import userEvent from '@testing-library/user-event';
 import App from './App';
 
 describe('App Component', () => {
-  test('handles adding, editing, and deleting an entry', () => {
+  test('handles adding, editing, and deleting an entry', async () => {
     render(<App />);
 
     
-    userEvent.type(screen.getByPlaceholderText("Write your journal entry here..."), "First entry");
+    await userEvent.type(screen.getByPlaceholderText("Write your journal entry here..."), "First entry");
     fireEvent.click(screen.getByText("Save Entry"));
-    expect(screen.getByText("First entry")).toBeInTheDocument();
+    expect(await screen.findByText("First entry")).toBeInTheDocument(); 
 
     
-    fireEvent.click(screen.getByText("Edit"));
-    userEvent.clear(screen.getByPlaceholderText("Write your journal entry here..."));
-    userEvent.type(screen.getByPlaceholderText("Write your journal entry here..."), "Updated entry");
+    fireEvent.click(await screen.findByText("Edit")); 
+    await userEvent.clear(screen.getByPlaceholderText("Write your journal entry here..."));
+    await userEvent.type(screen.getByPlaceholderText("Write your journal entry here..."), "Updated entry");
     fireEvent.click(screen.getByText("Save Entry"));
+    expect(await screen.findByText("Updated entry")).toBeInTheDocument(); 
     expect(screen.queryByText("First entry")).not.toBeInTheDocument();
-    expect(screen.getByText("Updated entry")).toBeInTheDocument();
 
     
-    fireEvent.click(screen.getByText("Delete"));
-    expect(screen.queryByText("Updated entry")).not.toBeInTheDocument();
+    fireEvent.click(await screen.findByText("Delete")); 
+    expect(screen.queryByText("Updated entry")).not.toBeInTheDocument(); 
   });
 });

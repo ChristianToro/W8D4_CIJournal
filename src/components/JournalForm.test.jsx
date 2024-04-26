@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import JournalForm from './JournalForm';
 
 describe('JournalForm Component', () => {
-  test('submits new entries correctly', () => {
+  test('submits new entries correctly', async () => {
     const mockAddEntry = jest.fn();
     const mockUpdateEntry = jest.fn();
     const mockClearCurrent = jest.fn();
@@ -11,7 +11,7 @@ describe('JournalForm Component', () => {
     render(<JournalForm addEntry={mockAddEntry} updateEntry={mockUpdateEntry} currentEntry={{}} clearCurrent={mockClearCurrent} />);
 
     const input = screen.getByPlaceholderText("Write your journal entry here...");
-    userEvent.type(input, "New entry");
+    await userEvent.type(input, "New entry");
     fireEvent.submit(screen.getByRole('button'));
 
     expect(mockAddEntry).toHaveBeenCalledWith("New entry");
